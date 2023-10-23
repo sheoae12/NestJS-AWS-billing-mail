@@ -6,6 +6,7 @@ import {
 import * as AWS from 'aws-sdk';
 import { formatDate, getKoreaCurrentTime, getLastMonthDates } from './util';
 import { MailService } from 'src/mail/mail.service';
+import { Cron } from '@nestjs/schedule';
 require('aws-sdk/lib/maintenance_mode_message').suppress = true;
 require('dotenv').config();
 
@@ -24,6 +25,7 @@ export class AwsService {
     this.costExplorer = new AWS.CostExplorer({ apiVersion: '2017-10-25' });
   }
 
+  @Cron('0 0 9 5 * *') // 매달 5일 9시
   async getCostsUsage() {
     this.logger.debug(`AWS::getCostAndUsage`);
 
